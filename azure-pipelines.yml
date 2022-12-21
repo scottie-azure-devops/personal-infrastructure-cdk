@@ -1,9 +1,6 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-22.04
-
 stages:
 - stage: Build
   jobs:
@@ -19,20 +16,21 @@ stages:
           npm --version
         displayName: 'install Node.js and NPM'
       - script: |
+          dotnet --list-sdks
+          dotnet --list-runtimes
+        displayName: 'verify .NET installation'
+      - script: |
           npm install -g aws-cdk
           cdk --version
         displayName: 'install CDK'
       - script: |
           cd PersonalInfrastructure/
           cdk synth
-        displayName: 'synth'
+        displayName: 'synth CDK application'
       - script: |
-          dotnet --list-sdks
-          ls -la
-          cd src/
-          ls -la
+          cd PersonalInfrastructure/src/
           dotnet test
-        displayName: 'test'
+        displayName: 'test CDK application'
       - task: ArchiveFiles@2
         inputs:
           rootFolderOrFile: '$(Build.SourcesDirectory)'
@@ -71,12 +69,14 @@ stages:
               npm --version
             displayName: 'install Node.js and NPM'
           - script: |
+              dotnet --list-sdks
+              dotnet --list-runtimes
+            displayName: 'verify .NET installation'
+          - script: |
               npm install -g aws-cdk
               cdk --version
             displayName: 'install CDK'
           - script: |
-              ls -la
-              cd PersonalInfrastructure
-              npm install
+              cd $(Pipeline.Workspace)/CDKApplication/PersonalInfrastructure
               cdk deploy
-            displayName: 'install and deploy application'
+            displayName: 'deploy CDK application'
