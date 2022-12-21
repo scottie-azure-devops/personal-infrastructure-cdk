@@ -46,6 +46,7 @@ stages:
           publishLocation: 'pipeline'
 - stage: Deployment
   dependsOn: Build
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
   - deployment: InfrastructureDeployment
     pool:
