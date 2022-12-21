@@ -1,6 +1,6 @@
-FROM public.ecr.aws/lambda/dotnet:6-arm64 AS base
+FROM public.ecr.aws/lambda/dotnet:7 AS base
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 as build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim as build
 
 WORKDIR "/src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda"
 COPY . .
@@ -10,7 +10,7 @@ RUN dotnet build "PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.cspro
 FROM build AS publish
 RUN dotnet publish "PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.csproj" \
             --configuration Release \
-            --runtime linux-arm64 \
+            --runtime linux-amd64 \
             --self-contained false \
             --output /app/publish \
             -p:PublishReadyToRun=true  

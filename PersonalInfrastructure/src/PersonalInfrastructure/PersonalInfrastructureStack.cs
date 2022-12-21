@@ -12,7 +12,7 @@ namespace PersonalInfrastructure
             DockerImageFunction gamingPCShutdownLambda = new DockerImageFunction(this, "gamingPCShutdownLambda",
                 new DockerImageFunctionProps()
                 {
-                    Architecture = Architecture.ARM_64,
+                    Architecture = Architecture.X86_64,
                     Code = gamingPCShutdownLambdaDockerImageCode,
                     Description = "Function to turn off gaming PC",
                     Timeout = Duration.Seconds(30) 
