@@ -1,15 +1,55 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
 stages:
+- stage: Build
+  jobs:
+  - job: BuildCDKApplication
+    pool:
+      vmImage: 'ubuntu-22.04'
+    continueOnError: false
+    steps:
+      - script: |
+          sudo apt install nodejs
+          sudo apt install npm
+          node --version
+          npm --version
+        displayName: 'install Node.js and NPM'
+      - script: |
+          dotnet --list-sdks
+          dotnet --list-runtimes
+        displayName: 'verify .NET installation'
+      - script: |
+          npm install -g aws-cdk
+          cdk --version
+        displayName: 'install CDK'
+      - script: |
+          cd PersonalInfrastructure/
+          cdk synth
+        displayName: 'synth CDK application'
+      - script: |
+          cd PersonalInfrastructure/src/
+          dotnet test
+        displayName: 'test CDK application'
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Build.SourcesDirectory)'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/CDKApplication.zip'
+          replaceExistingArchive: true
+          verbose: true
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: 'CDKApplication'
+          publishLocation: 'pipeline'
 - stage: Deployment
+  dependsOn: Build
   jobs:
   - deployment: InfrastructureDeployment
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'ubuntu-22.04'
     environment: 'Production'
     strategy:
       runOnce:
@@ -29,11 +69,14 @@ stages:
               npm --version
             displayName: 'install Node.js and NPM'
           - script: |
+              dotnet --list-sdks
+              dotnet --list-runtimes
+            displayName: 'verify .NET installation'
+          - script: |
               npm install -g aws-cdk
               cdk --version
             displayName: 'install CDK'
           - script: |
-              cd PersonalInfrastructure
-              npm install
+              cd $(Pipeline.Workspace)/CDKApplication/s/PersonalInfrastructure
               cdk deploy
-            displayName: 'install and deploy application'
+            displayName: 'deploy CDK application'
