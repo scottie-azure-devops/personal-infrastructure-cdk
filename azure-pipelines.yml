@@ -33,6 +33,7 @@ stages:
               cdk --version
             displayName: 'install CDK'
           - script: |
+              ls -la
               cd PersonalInfrastructure
               npm install
               cdk deploy
