@@ -10,7 +10,7 @@ RUN dotnet build "PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.cspro
 FROM build AS publish
 RUN dotnet publish "PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.csproj" \
             --configuration Release \
-            --runtime linux-amd64 \
+            --runtime linux-64 \
             --self-contained false \
             --output /app/publish \
             -p:PublishReadyToRun=true  
