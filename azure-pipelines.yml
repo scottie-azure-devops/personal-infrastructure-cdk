@@ -2,14 +2,53 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: ubuntu-22.04
 
 stages:
+- stage: Build
+  jobs:
+  - job: BuildCDKApplication
+    pool:
+      vmImage: 'ubuntu-22.04'
+    continueOnError: false
+    steps:
+      - script: |
+          sudo apt install nodejs
+          sudo apt install npm
+          node --version
+          npm --version
+        displayName: 'install Node.js and NPM'
+      - script: |
+          npm install -g aws-cdk
+          cdk --version
+        displayName: 'install CDK'
+      - script: |
+          cd PersonalInfrastructure/
+          cdk synth
+        displayName: 'synth'
+      - script: |
+          cd src/
+          dotnet test
+        displayName: 'test'
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(Build.SourcesDirectory)'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/CDKApplication.zip'
+          replaceExistingArchive: true
+          verbose: true
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: 'CDKApplication'
+          publishLocation: 'pipeline'
 - stage: Deployment
+  dependsOn: Build
   jobs:
   - deployment: InfrastructureDeployment
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'ubuntu-22.04'
     environment: 'Production'
     strategy:
       runOnce:
