@@ -77,6 +77,6 @@ stages:
               cdk --version
             displayName: 'install CDK'
           - script: |
-              cd $(Pipeline.Workspace)/CDKApplication/PersonalInfrastructure
+              cd $(Pipeline.Workspace)/CDKApplication/s/PersonalInfrastructure
               cdk deploy
             displayName: 'deploy CDK application'
