@@ -27,7 +27,10 @@ stages:
           cdk synth
         displayName: 'synth'
       - script: |
+          dotnet --list-sdks
+          ls -la
           cd src/
+          ls -la
           dotnet test
         displayName: 'test'
       - task: ArchiveFiles@2
