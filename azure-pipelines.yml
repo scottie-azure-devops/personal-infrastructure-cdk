@@ -1,19 +1,39 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: Deployment
+  jobs:
+  - deployment: InfrastructureDeployment
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'Production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              sudo apt-get install awscli
+              aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID)
+              aws configure set aws_secret_access_key $(AWS_SECRET_ACCESS_KEY)
+              aws configure set aws_default_region $(AWS_DEFAULT_REGION)
+              aws --version
+            displayName: 'install and configure AWS CLI'
+          - script: |
+              sudo apt install nodejs
+              sudo apt install npm
+              node --version
+              npm --version
+            displayName: 'install Node.js and NPM'
+          - script: |
+              npm install -g aws-cdk
+              cdk --version
+            displayName: 'install CDK'
+          - script: |
+              cd PersonalInfrastructure
+              npm install
+              cdk deploy
+            displayName: 'install and deploy application'
