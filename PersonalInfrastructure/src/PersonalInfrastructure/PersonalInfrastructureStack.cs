@@ -1,5 +1,7 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.Lambda;
+using Amazon.CDK.AWS.Events;
+using Amazon.CDK.AWS.Events.Targets;
 using Constructs;
 
 namespace PersonalInfrastructure
@@ -8,6 +10,7 @@ namespace PersonalInfrastructure
     {
         internal PersonalInfrastructureStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
+            // Lambda function
             DockerImageCode gamingPCShutdownLambdaDockerImageCode = DockerImageCode.FromImageAsset("src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda/src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda");
             DockerImageFunction gamingPCShutdownLambda = new DockerImageFunction(this, "gamingPCShutdownLambda",
                 new DockerImageFunctionProps()
@@ -15,9 +18,20 @@ namespace PersonalInfrastructure
                     Architecture = Architecture.X86_64,
                     Code = gamingPCShutdownLambdaDockerImageCode,
                     Description = "Function to turn off gaming PC",
-                    Timeout = Duration.Seconds(30) 
+                    Timeout = Duration.Seconds(60) 
                 }
             );
+            
+            // schedule
+            Rule rule = new Rule(this, "Rule", new RuleProps()
+            {
+                Schedule = Schedule.Cron(new CronOptions()
+                {
+                    Minute = "0",
+                    Hour = "8"
+                }) 
+            });
+            rule.AddTarget(new LambdaFunction(gamingPCShutdownLambda));
         }
     }
 }
