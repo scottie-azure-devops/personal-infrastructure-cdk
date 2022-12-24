@@ -1,4 +1,3 @@
-using Amazon.Lambda.TestUtilities;
 using FakeItEasy;
 using FluentAssertions;
 using PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.Providers;
