@@ -1,5 +1,6 @@
 using Amazon.Lambda.Core;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.Providers;
 using PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda.Services;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -15,6 +16,7 @@ public class Function
     public Function()
     {
         ServiceCollection serviceCollection = new ServiceCollection();
+        serviceCollection.AddTransient<IEc2Provider, Ec2Provider>();
         serviceCollection.AddTransient<IServerSchedulerService, ServerSchedulerService>();
         _serviceProvider = serviceCollection.BuildServiceProvider();
         _serverSchedulerService = _serviceProvider.GetRequiredService<IServerSchedulerService>();
