@@ -11,12 +11,12 @@ namespace PersonalInfrastructure
         internal PersonalInfrastructureStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
             // Lambda function
-            DockerImageCode gamingPCShutdownLambdaDockerImageCode = DockerImageCode.FromImageAsset("src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda/src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda");
-            DockerImageFunction gamingPCShutdownLambda = new DockerImageFunction(this, "gamingPCShutdownLambda",
+            DockerImageCode gamingPcShutdownLambdaDockerImageCode = DockerImageCode.FromImageAsset("src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda/src/PersonalInfrastructure.GamingPC.ScheduledShutdown.Lambda");
+            DockerImageFunction gamingPcShutdownLambda = new DockerImageFunction(this, "gamingPCShutdownLambda",
                 new DockerImageFunctionProps()
                 {
                     Architecture = Architecture.X86_64,
-                    Code = gamingPCShutdownLambdaDockerImageCode,
+                    Code = gamingPcShutdownLambdaDockerImageCode,
                     Description = "Function to turn off gaming PC",
                     Timeout = Duration.Seconds(60) 
                 }
@@ -31,7 +31,7 @@ namespace PersonalInfrastructure
                     Hour = "8"
                 }) 
             });
-            rule.AddTarget(new LambdaFunction(gamingPCShutdownLambda));
+            rule.AddTarget(new LambdaFunction(gamingPcShutdownLambda));
         }
     }
 }
