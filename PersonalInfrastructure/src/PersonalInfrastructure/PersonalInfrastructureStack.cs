@@ -58,7 +58,7 @@ namespace PersonalInfrastructure
                     Code = gamingPcShutdownLambdaDockerImageCode,
                     Description = "Function to turn off gaming PC",
                     Role = gamingPcShutdownLambdaFunctionExecutionRole,
-                    Timeout = Duration.Seconds(60) 
+                    Timeout = Duration.Seconds(600) 
                 }
             );
             

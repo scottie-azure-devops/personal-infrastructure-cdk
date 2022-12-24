@@ -14,6 +14,10 @@ public class ServerSchedulerService : IServerSchedulerService
     public async Task<bool> StopInstances(string targetTagKey, string targetTagValue)
     {
         List<string> targetInstanceIds = await _ec2Provider.GetInstancesForTag(targetTagKey, targetTagValue);
-        return await _ec2Provider.StopInstances(targetInstanceIds);
+        if (targetInstanceIds.Count > 0)
+        {
+            return await _ec2Provider.StopInstances(targetInstanceIds); 
+        }
+        return false;
     }
 }
