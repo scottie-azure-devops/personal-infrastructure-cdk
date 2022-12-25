@@ -7,9 +7,9 @@ using Constructs;
 
 namespace PersonalInfrastructure
 {
-    public class PersonalInfrastructureStack : Stack
+    public class Ec2ShutdownLambdaStack : Stack
     {
-        internal PersonalInfrastructureStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
+        internal Ec2ShutdownLambdaStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
             // IAM
             Role gamingPcShutdownLambdaFunctionExecutionRole = new Role(this, "DockerFunctionExecutionRole", new RoleProps {
