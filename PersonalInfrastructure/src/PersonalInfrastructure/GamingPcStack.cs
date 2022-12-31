@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
+using Amazon.CDK.AWS.SSM;
 using Constructs;
 
 namespace PersonalInfrastructure;
@@ -10,6 +11,10 @@ public class GamingPcStack : Stack
 {
     internal GamingPcStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
     {
+        // SSM parameters
+        IStringParameter gamingPcSecurityGroupIpv4Cidr = StringParameter.FromStringParameterName(this, "IPV4CIDR", "/personal-infrastructure-cdk/ipv4-cidr");
+        IStringParameter gamingPcSecurityGroupIpv6Cidr = StringParameter.FromStringParameterName(this, "IPV6CIDR", "/personal-infrastructure-cdk/ipv6-cidr");
+
         // networking
         Vpc gamingPcVpc = new Vpc(this, "GamingPCVPC", new VpcProps {
             IpAddresses = IpAddresses.Cidr("10.0.0.0/16")
@@ -24,8 +29,9 @@ public class GamingPcStack : Stack
             Vpc = gamingPcVpc
         });
         // allow inbound RDP traffic
-        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv4(System.Environment.GetEnvironmentVariable("GAMING_PC_IPV4_CIDR") ?? throw new InvalidOperationException()), Port.Tcp(3389));
-        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv6(System.Environment.GetEnvironmentVariable("GAMING_PC_IPV6_CIDR") ?? throw new InvalidOperationException()), Port.Tcp(3389));
+        // /personal-infrastructure-cdk/ipv4-cidr
+        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv4(gamingPcSecurityGroupIpv4Cidr.StringValue), Port.Tcp(3389));
+        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv6(gamingPcSecurityGroupIpv6Cidr.StringValue), Port.Tcp(3389));
 
         // EC2 instance
         Instance_ gamingPc = new Instance_(this, "GamingPCInstance", new InstanceProps()

@@ -10,10 +10,6 @@ stages:
     continueOnError: false
     steps:
       - script: |
-          export GAMING_PC_IPV4_CIDR=$(GAMING_PC_IPV4_CIDR)
-          export GAMING_PC_IPV6_CIDR=$(GAMING_PC_IPV6_CIDR)
-        displayName: 'configure environment variables'
-      - script: |
           sudo apt install nodejs
           sudo apt install npm
           node --version
@@ -60,10 +56,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: |
-              export GAMING_PC_IPV4_CIDR=$(GAMING_PC_IPV4_CIDR)
-              export GAMING_PC_IPV6_CIDR=$(GAMING_PC_IPV6_CIDR)
-            displayName: 'configure environment variables'
           - script: |
               sudo apt-get install awscli
               aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID)
