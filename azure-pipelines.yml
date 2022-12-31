@@ -79,5 +79,5 @@ stages:
             displayName: 'install CDK'
           - script: |
               cd $(Pipeline.Workspace)/CDKApplication/s/PersonalInfrastructure
-              cdk deploy --require-approval never
+              cdk deploy --all --require-approval never
             displayName: 'deploy CDK application'
