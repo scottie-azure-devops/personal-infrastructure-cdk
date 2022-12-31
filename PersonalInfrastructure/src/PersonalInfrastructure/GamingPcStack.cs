@@ -24,8 +24,8 @@ public class GamingPcStack : Stack
             Vpc = gamingPcVpc
         });
         // allow inbound RDP traffic
-        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv4(System.Environment.GetEnvironmentVariable("GAMING_PC_IPV4_CIDR") ?? throw new InvalidOperationException()), Port.Tcp(3389));
-        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv6(System.Environment.GetEnvironmentVariable("GAMING_PC_IPV6_CIDR") ?? throw new InvalidOperationException()), Port.Tcp(3389));
+        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv4(System.Environment.GetEnvironmentVariable("GAMING_PC_IPV4_CIDR")), Port.Tcp(3389));
+        gamingPcSecurityGroup.AddIngressRule(Peer.Ipv6(System.Environment.GetEnvironmentVariable("GAMING_PC_IPV6_CIDR")), Port.Tcp(3389));
 
         // EC2 instance
         Instance_ gamingPc = new Instance_(this, "GamingPCInstance", new InstanceProps()

@@ -12,7 +12,7 @@ public class ServerSchedulerServiceTests
     public async Task Should_StopInstances_ForStandardInput()
     {
         // arrange
-        string targetTagKey = "NightlyStop";
+        string targetTagKey = "NightlyShutdown";
         string targetTagValue = "True";
         List<string> instanceIds = new List<string>() { "i-1234567890abcdef0" };
         IEc2Provider ec2Provider = A.Fake<IEc2Provider>();
