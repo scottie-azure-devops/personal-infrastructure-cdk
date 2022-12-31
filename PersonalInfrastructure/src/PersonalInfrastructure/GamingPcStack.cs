@@ -59,6 +59,10 @@ public class GamingPcStack : Stack
             InstanceType = new InstanceType("g4dn.xlarge"),
             KeyName = "gaming-pc",
             SecurityGroup = gamingPcSecurityGroup,
+            VpcSubnets = new SubnetSelection()
+            {
+                SubnetType = SubnetType.PUBLIC
+            },
             Vpc = gamingPcVpc 
         });
     }
