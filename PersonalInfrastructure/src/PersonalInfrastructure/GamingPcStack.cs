@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
@@ -17,7 +16,8 @@ public class GamingPcStack : Stack
 
         // networking
         Vpc gamingPcVpc = new Vpc(this, "GamingPCVPC", new VpcProps {
-            IpAddresses = IpAddresses.Cidr("10.0.0.0/16")
+            IpAddresses = IpAddresses.Cidr("10.0.0.0/16"),
+            NatGateways = 0
         });
         ISelectedSubnets subnetSelection = gamingPcVpc.SelectSubnets(new SubnetSelection {
             SubnetType = SubnetType.PUBLIC
