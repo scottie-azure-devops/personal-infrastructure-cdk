@@ -29,6 +29,6 @@ public class Function
     /// <returns></returns>
     public async Task<bool> FunctionHandler(ILambdaContext context)
     {
-        return await _serverSchedulerService.StopInstances("NightlyStop", "True");
+        return await _serverSchedulerService.StopInstances("NightlyShutdown", "True");
     }
 }
