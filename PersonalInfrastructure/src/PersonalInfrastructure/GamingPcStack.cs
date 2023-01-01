@@ -44,7 +44,7 @@ public class GamingPcStack : Stack
                     Volume = new BlockDeviceVolume(new EbsDeviceProps()
                     {
                         DeleteOnTermination = true,
-                        VolumeSize = 50,
+                        VolumeSize = 150,
                         VolumeType = EbsDeviceVolumeType.GP3
                     })
                 }
@@ -56,7 +56,7 @@ public class GamingPcStack : Stack
                 }
             }),
             InstanceName = "GamingPC",
-            InstanceType = new InstanceType("g4dn.xlarge"),
+            InstanceType = new InstanceType("g4dn.2xlarge"),
             KeyName = "gaming-pc",
             SecurityGroup = gamingPcSecurityGroup,
             VpcSubnets = new SubnetSelection()
