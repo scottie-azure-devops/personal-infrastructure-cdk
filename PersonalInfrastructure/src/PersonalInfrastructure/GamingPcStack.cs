@@ -49,13 +49,7 @@ public class GamingPcStack : Stack
                     })
                 }
             },
-            MachineImage = MachineImage.GenericWindows(new Dictionary<string, string>()
-            {
-                {
-                    // NVIDIA Gaming PC - Windows Server 2019 
-                    "us-east-1", "ami-09420ec0ca80e0435"
-                }
-            }),
+            MachineImage = new WindowsImage(WindowsVersion.WINDOWS_SERVER_2022_ENGLISH_FULL_BASE),
             InstanceName = "GamingPC",
             InstanceType = new InstanceType("g5.2xlarge"),
             KeyName = "gaming-pc",
