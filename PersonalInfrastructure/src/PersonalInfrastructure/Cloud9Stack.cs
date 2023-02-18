@@ -19,6 +19,8 @@ public class Cloud9Stack : Stack
         CfnEnvironmentEC2 cloud9Environment = new CfnEnvironmentEC2(this, "Cloud9", new CfnEnvironmentEC2Props()
         {
             AutomaticStopTimeMinutes = 30,
+            ConnectionType = "CONNECT_SSH",
+            ImageId = "amazonlinux-2-x86_64",
             InstanceType = "m5.large",
             Name = "scottie-cloud9",
             // launching instance into public subnet for SSH
