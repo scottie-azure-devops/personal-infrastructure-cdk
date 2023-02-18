@@ -44,7 +44,7 @@ public class GamingPcStack : Stack
                     Volume = new BlockDeviceVolume(new EbsDeviceProps()
                     {
                         DeleteOnTermination = true,
-                        VolumeSize = 150,
+                        VolumeSize = 100,
                         VolumeType = EbsDeviceVolumeType.GP3
                     })
                 }
@@ -52,11 +52,12 @@ public class GamingPcStack : Stack
             MachineImage = MachineImage.GenericWindows(new Dictionary<string, string>()
             {
                 {
+                    // NVIDIA Gaming PC - Windows Server 2019 
                     "us-east-1", "ami-09420ec0ca80e0435"
                 }
             }),
             InstanceName = "GamingPC",
-            InstanceType = new InstanceType("g4dn.2xlarge"),
+            InstanceType = new InstanceType("g5.2xlarge"),
             KeyName = "gaming-pc",
             SecurityGroup = gamingPcSecurityGroup,
             VpcSubnets = new SubnetSelection()
