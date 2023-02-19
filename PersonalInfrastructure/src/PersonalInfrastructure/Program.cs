@@ -26,18 +26,18 @@ namespace PersonalInfrastructure
                     }
                 }
             });
-            new GamingPcStack(app, "GamingPCStack", new StackProps()
-            {
-                Tags = new Dictionary<string, string>()
-                {
-                    {
-                        "Environment", "Production"
-                    },
-                    {
-                        "NightlyShutdown", "True"
-                    }
-                }
-            });
+            // new GamingPcStack(app, "GamingPCStack", new StackProps()
+            // {
+            //     Tags = new Dictionary<string, string>()
+            //     {
+            //         {
+            //             "Environment", "Production"
+            //         },
+            //         {
+            //             "NightlyShutdown", "True"
+            //         }
+            //     }
+            // });
             app.Synth();
         }
     }

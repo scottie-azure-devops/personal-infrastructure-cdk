@@ -28,6 +28,7 @@ public class GamingPcStack : Stack
             AllowAllIpv6Outbound = true,
             Vpc = gamingPcVpc
         });
+        
         // allow inbound RDP traffic
         gamingPcSecurityGroup.AddIngressRule(Peer.Ipv4(gamingPcSecurityGroupIpv4Cidr.StringValue), Port.Tcp(3389));
         gamingPcSecurityGroup.AddIngressRule(Peer.Ipv6(gamingPcSecurityGroupIpv6Cidr.StringValue), Port.Tcp(3389));
